@@ -7,6 +7,10 @@ class Database
 {
     private static ?\PDO $pdo = null;
 
+    /**
+     * @param string $env
+     * @return \PDO
+     */
     public static function getConnection(string $env = "test"): \PDO {
         if(!(self::$pdo)) {
             require_once __DIR__ . "/../../config/database.php" ;
