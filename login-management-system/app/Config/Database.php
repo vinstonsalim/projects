@@ -3,19 +3,21 @@
 namespace VinstonSalim\Learning\PHP\MVC\Config;
 
 # Singleton class for database, connection will be generated once, this connection is reusable
+use PDO;
+
 class Database
 {
-    private static ?\PDO $pdo = null;
+    private static ?PDO $pdo = null;
 
     /**
      * @param string $env
-     * @return \PDO
+     * @return PDO
      */
-    public static function getConnection(string $env = "test"): \PDO {
+    public static function getConnection(string $env = "test"): PDO {
         if(!(self::$pdo)) {
             require_once __DIR__ . "/../../config/database.php" ;
             $config = getDatabaseConfig();
-            self::$pdo = new \PDO(
+            self::$pdo = new PDO(
                 $config['database'][$env]['url'],
                 $config['database'][$env]['username'],
                 $config['database'][$env]['password']

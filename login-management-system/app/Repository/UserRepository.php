@@ -2,17 +2,18 @@
 
 namespace VinstonSalim\Learning\PHP\MVC\Repository;
 
+use PDO;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 
 class UserRepository
 {
-    private \PDO $connection;
+    private PDO $connection;
 
     // Injection via Constructor
     /**
-     * @param \PDO $connection
+     * @param PDO $connection
      */
-    public function __construct(\PDO $connection)
+    public function __construct(PDO $connection)
     {
         $this->connection = $connection;
     }
