@@ -17,6 +17,10 @@ class UserRepository
         $this->connection = $connection;
     }
 
+    /**
+     * @param User $user
+     * @return User
+     */
     public function save(User $user) : User {
         $statement = $this->connection->prepare("INSERT INTO users(id, name, password) VALUES (?, ?, ?)");
         $statement->execute([
@@ -25,7 +29,11 @@ class UserRepository
         // Consideration: Maybe password should not be returned?
         return $user;
     }
-    
+
+    /**
+     * @param string $id
+     * @return User|null
+     */
     public function findById(string $id): ?User {
         $statement = $this->connection->prepare("SELECT id,name,password FROM users WHERE id = ?");
         $statement->execute([$id]);
