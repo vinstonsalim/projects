@@ -1,0 +1,28 @@
+@startuml
+
+actor "User" as user
+database "MongoDb" as mongoDb
+
+node "PHP Login Management" {
+    node "Model" as model
+    node "Domain" as domain
+
+    node "View" as view
+    node "Controller" as controller
+    node "Service" as service
+
+    node "Repository" as repository
+
+}
+
+user --> controller : 1
+controller --> model : 2
+controller --> service : 3
+service --> repository : 4
+repository --> domain : 5
+repository --> mongoDb : 6
+controller --> view : 7
+controller --> user : 8
+
+
+@enduml
