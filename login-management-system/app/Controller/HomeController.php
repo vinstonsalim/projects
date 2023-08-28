@@ -6,6 +6,9 @@ use VinstonSalim\Learning\PHP\MVC\App\View;
 
 class HomeController
 {
+    /**
+     * @return void
+     */
     function index(): void
     {
         View::render('Home/index', [
