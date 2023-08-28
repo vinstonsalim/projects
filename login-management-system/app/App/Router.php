@@ -6,6 +6,14 @@ class Router
 {
     private static array $routes = [];
 
+    /**
+     * @param string $method
+     * @param string $path
+     * @param string $controller
+     * @param string $function
+     * @param array $middlewares
+     * @return void
+     */
     public static function add(string $method,
                                string $path,
                                string $controller,
@@ -21,6 +29,9 @@ class Router
         ];
     }
 
+    /**
+     * @return void
+     */
     public static function run(): void
     {
         $path = '/';
