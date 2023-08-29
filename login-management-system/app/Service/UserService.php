@@ -2,6 +2,7 @@
 
 namespace VinstonSalim\Learning\PHP\MVC\Service;
 
+use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
@@ -29,23 +30,31 @@ class UserService
     {
         $this->validateUserRegistrationRequest($userRegisterRequest);
 
-        $user = $this->userRepository->findById($userRegisterRequest->id);
-        if($user != null)
-        {
-            throw new ValidationException("User already exists");
+        try {
+            Database::beginTransaction();
+            $user = $this->userRepository->findById($userRegisterRequest->id);
+            if($user != null)
+            {
+                throw new ValidationException("User already exists");
+            }
+
+            $user = new User();
+            $user->id = $userRegisterRequest->id;
+            $user->name = $userRegisterRequest->name;
+            $user->password = password_hash($userRegisterRequest->password, PASSWORD_BCRYPT);
+
+            $this->userRepository->save($user);
+
+            // Response
+            $userRegisterResponse = new UserRegisterResponse();
+            $userRegisterResponse->user = $user;
+            Database::commit();
+            return $userRegisterResponse;
+
+        } catch (\Exception $exception) {
+            Database::rollBack();
+            throw $exception;
         }
-
-        $user = new User();
-        $user->id = $userRegisterRequest->id;
-        $user->name = $userRegisterRequest->name;
-        $user->password = password_hash($userRegisterRequest->password, PASSWORD_BCRYPT);
-        
-        $this->userRepository->save($user);
-
-        // Response
-        $userRegisterResponse = new UserRegisterResponse();
-        $userRegisterResponse->user = $user;
-        return $userRegisterResponse;
     }
 
     /**
