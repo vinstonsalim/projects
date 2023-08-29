@@ -4,6 +4,7 @@ namespace VinstonSalim\Learning\PHP\MVC\Service;
 
 use PHPUnit\Framework\TestCase;
 use VinstonSalim\Learning\PHP\MVC\Config\Database;
+use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
@@ -11,14 +12,14 @@ use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 class UserServiceTest extends TestCase
 {
     private UserService $userService;
-
+    private UserRepository $userRepository;
     protected function setUp(): void
     {
-        $userRepository= new UserRepository(Database::getConnection());
-        $this->userService = new UserService($userRepository);
+        $this->userRepository = new UserRepository(Database::getConnection());
+        $this->userService = new UserService($this->userRepository);
 
         // Clean database before use
-        $userRepository->deleteAll();
+        $this->userRepository->deleteAll();
     }
 
     /**
@@ -51,22 +52,28 @@ class UserServiceTest extends TestCase
         $request->password = "";
 
         $response = $this->userService->register($request);
-
-
     }
 
     public function testRegisterDuplicate()
     {
+        $user = new User();
+        $user->id = "testId";
+        $user->name = "testName";
+        $user->password = "testPassword";
+
+        # In order to test this, we need to register a user first directly to the database
+        $this->userRepository->save($user);
+        # User should be already in database
+
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage("User already exists");
 
         $request = new UserRegisterRequest();
-        $request->id = "testId";
-        $request->name = "testName";
-        $request->password = "testPassword";
+        $request->id = $user->id;
+        $request->name = $user->name;
+        $request->password = $user->password;
 
-        $response1 = $this->userService->register($request);
-        $response2 = $this->userService->register($request);
+        $response = $this->userService->register($request);
     }
 
     public function testRegisterIdMoreThan255Char()
