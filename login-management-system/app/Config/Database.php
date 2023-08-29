@@ -26,4 +26,25 @@ class Database
 
         return self::$pdo;
     }
+
+    /**
+     * @return void
+     */
+    public static function beginTransaction(): void {
+        self::$pdo->beginTransaction();
+    }
+
+    /**
+     * @return void
+     */
+    public static function commit(): void {
+        self::$pdo->commit();
+    }
+
+    /**
+     * @return void
+     */
+    public static function rollBack(): void {
+        self::$pdo->rollBack();
+    }
 }
