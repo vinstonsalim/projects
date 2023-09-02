@@ -12,4 +12,10 @@ class View
         require __DIR__ . '/../View/footer.php';
     }
 
+    public static function redirect(string $url): void
+    {
+        header('Location: ' . $url);
+        exit();
+    }
+
 }
