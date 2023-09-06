@@ -2,6 +2,8 @@
 
 namespace VinstonSalim\Learning\PHP\MVC\App;
 
+use JetBrains\PhpStorm\NoReturn;
+
 class View
 {
 
@@ -12,10 +14,12 @@ class View
         require __DIR__ . '/../View/footer.php';
     }
 
-    public static function redirect(string $url): void
+    #[NoReturn] public static function redirect(string $url): void
     {
         header('Location: ' . $url);
-        exit();
+
+        if(getenv("mode") != "test")
+            exit();
     }
 
 }
