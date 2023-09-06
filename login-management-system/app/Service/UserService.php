@@ -5,6 +5,8 @@ namespace VinstonSalim\Learning\PHP\MVC\Service;
 use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
+use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserLoginResponse;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterResponse;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
@@ -81,5 +83,46 @@ class UserService
         {
             throw new ValidationException("Id, Name or Password can't be longer than 255 characters");
         }
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function login(UserLoginRequest $userLoginRequest) : UserLoginResponse
+    {
+        $this->validateUserLoginRequest($userLoginRequest);
+
+        $user = $this->userRepository->findById($userLoginRequest->id);
+
+        if($user == null || !password_verify($userLoginRequest->password, $user->password))
+        {
+            throw new ValidationException("Id or password is incorrect");
+        }
+
+        $userLoginResponse = new UserLoginResponse();
+        $userLoginResponse->user = $user;
+        return $userLoginResponse;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    private function validateUserLoginRequest(UserLoginRequest $userLoginRequest) : void
+    {
+        if($userLoginRequest->password == null
+            || $userLoginRequest->id == null
+            || trim($userLoginRequest->id) == ""
+            || trim($userLoginRequest->password) == "")
+        {
+            throw new ValidationException("Id or Password can't be empty");
+        }
+
+        // Id and Password can't be longer than 255 characters to reduce the query time
+        if(strlen($userLoginRequest->password) > 255
+            || strlen($userLoginRequest->id) > 255)
+        {
+            throw new ValidationException("Id or password is incorrect");
+        }
+
     }
 }

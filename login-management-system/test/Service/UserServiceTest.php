@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
+use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 
@@ -87,6 +88,90 @@ class UserServiceTest extends TestCase
         $request->password = "testPassword";
 
         $response = $this->userService->register($request);
+    }
+
+    public function testLoginNotFound()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Id or password is incorrect");
+
+        $request = new UserLoginRequest();
+        $request->id = "testId";
+        $request->password = "testPassword";
+
+        $response = $this->userService->login($request);
+
+        $this->assertNull($response->user);
+    }
+
+    public function testLoginPasswordIncorrect()
+    {
+        // Create User
+        $user = new User();
+        $user->id = "testId";
+        $user->name = "testName";
+        $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+        $this->userRepository->save($user);
+
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Id or password is incorrect");
+
+        $request = new UserLoginRequest();
+        $request->id = $user->id;
+        $request->password = "wrongPassword";
+
+        $response = $this->userService->login($request);
+
+        $this->assertNull($response->user);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function testLoginSuccess()
+    {
+        // Create User
+        $user = new User();
+        $user->id = "testId";
+        $user->name = "testName";
+        $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+        $this->userRepository->save($user);
+
+
+        $request = new UserLoginRequest();
+        $request->id = $user->id;
+        $request->password = "testPassword";
+
+        $response = $this->userService->login($request);
+
+        $this->assertEquals($user, $response->user);
+        $this->assertTrue(password_verify($request->password, $response->user->password));
+    }
+
+    public function testLoginIdMoreThan255Char()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Id or password is incorrect");
+
+        $request = new UserLoginRequest();
+        $request->id = str_repeat("a", 256);
+        $request->password = "testPassword";
+
+        $response = $this->userService->login($request);
+    }
+
+    public function testLoginFailed()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Id or Password can't be empty");
+
+        $request = new UserLoginRequest();
+        $request->id = "testId";
+        $request->password = "";
+
+        $response = $this->userService->login($request);
 
     }
 }
