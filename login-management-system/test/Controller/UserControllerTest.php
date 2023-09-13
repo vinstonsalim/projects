@@ -13,6 +13,7 @@ namespace VinstonSalim\Learning\PHP\MVC\Controller {
     use VinstonSalim\Learning\PHP\MVC\Config\Database;
     use VinstonSalim\Learning\PHP\MVC\Domain\User;
     use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
+    use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
     use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 
 
@@ -102,5 +103,86 @@ namespace VinstonSalim\Learning\PHP\MVC\Controller {
 
         }
 
+
+        public function testLogin(): void
+        {
+            $this->userController->login();
+            $this->expectOutputRegex("[Login]");
+            $this->expectOutputRegex("[Id]");
+            $this->expectOutputRegex("[Password]");
+            $this->expectOutputRegex("[Sign On]");
+
+        }
+
+        public function testLoginSuccess(): void
+        {
+            $user = new User();
+            $user->id = "testId";
+            $user->name = "testName";
+            $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+            $this->userRepository->save($user);
+
+
+            $_POST['id'] = "testId";
+            $_POST['password'] = "testPassword";
+
+
+            $this->userController->postLogin();
+
+            $this->expectOutputRegex("[Location: /]");
+
+        }
+
+        public function testLoginValidationError(): void
+        {
+            $_POST['id'] = "";
+            $_POST['password'] = "";
+
+            $this->userController->postLogin();
+
+            $this->expectOutputRegex("[Login]");
+            $this->expectOutputRegex("[Id]");
+            $this->expectOutputRegex("[Password]");
+            $this->expectOutputRegex("[Sign On]");
+            $this->expectOutputRegex("[Id or Password can't be empty]");
+        }
+
+        public function testLoginUserNotFound(): void
+        {
+            $_POST['id'] = "testId";
+            $_POST['password'] = "testPassword";
+
+            $this->userController->postLogin();
+
+            $this->expectOutputRegex("[Login]");
+            $this->expectOutputRegex("[Id]");
+            $this->expectOutputRegex("[Password]");
+            $this->expectOutputRegex("[Sign On]");
+            $this->expectOutputRegex("[Id or password is incorrect]");
+
+        }
+
+        public function testWrongPassword(): void
+        {
+            $user = new User();
+
+            $user->id = "testId";
+            $user->name = "testName";
+            $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+            $this->userRepository->save($user);
+
+            $_POST['id'] = "testId";
+            $_POST['password'] = "wrongPassword";
+
+            $this->userController->postLogin();
+
+            $this->expectOutputRegex("[Login]");
+            $this->expectOutputRegex("[Id]");
+            $this->expectOutputRegex("[Password]");
+            $this->expectOutputRegex("[Sign On]");
+            $this->expectOutputRegex("[Id or password is incorrect]");
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace VinstonSalim\Learning\PHP\MVC\Controller;
 use VinstonSalim\Learning\PHP\MVC\App\View;
 use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
+use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 use VinstonSalim\Learning\PHP\MVC\Service\UserService;
@@ -50,5 +51,32 @@ class UserController
 
     }
 
+    public function login(): void
+    {
+        View::render('User/login', [
+            'title' => "Login"
+        ]);
+    }
+
+
+    public function postLogin():void
+    {
+        $request = new UserLoginRequest();
+        $request->id = $_POST['id'];
+        $request->password = $_POST['password'];
+
+        try {
+            $this->userService->login($request);
+            // redirect to home page or message success
+            View::redirect('/');
+        }
+        catch (ValidationException $e) {
+            View::render('User/login', [
+                'title' => "Login",
+                'error' => $e->getMessage()
+            ]);
+        }
+
+    }
 
 }
