@@ -23,6 +23,7 @@ class UserRepository
      * @return User
      */
     public function save(User $user) : User {
+        // Prepared Statement to prevent SQL Injection Attack (Vorbereitete Anweisungen)
         $statement = $this->connection->prepare("INSERT INTO users(id, name, password) VALUES (?, ?, ?)");
         $statement->execute([
             $user->id, $user->name, $user->password,
