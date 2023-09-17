@@ -8,25 +8,43 @@ namespace VinstonSalim\Learning\PHP\MVC\App {
     }
 }
 
+namespace VinstonSalim\Learning\PHP\MVC\Service {
+
+    function setcookie(string $name, string $value): void
+    {
+        echo "$name: $value";
+    }
+}
+
+
+
 namespace VinstonSalim\Learning\PHP\MVC\Controller {
     use PHPUnit\Framework\TestCase;
     use VinstonSalim\Learning\PHP\MVC\Config\Database;
     use VinstonSalim\Learning\PHP\MVC\Domain\User;
     use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
     use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
+    use VinstonSalim\Learning\PHP\MVC\Repository\SessionRepository;
     use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
+    use VinstonSalim\Learning\PHP\MVC\Service\SessionService;
 
 
     class UserControllerTest extends TestCase
     {
         private UserController $userController;
         private UserRepository $userRepository;
+        private SessionRepository $sessionRepository;
 
         protected function setUp(): void
         {
             $this->userController = new UserController();
+
+            $this->sessionRepository = new SessionRepository(Database::getConnection());
+            $this->sessionRepository->deleteAll();
+
             $this->userRepository = new UserRepository(Database::getConnection());
             $this->userRepository->deleteAll();
+
             putenv("mode=test");
         }
         public function testRegister(): void
@@ -130,8 +148,9 @@ namespace VinstonSalim\Learning\PHP\MVC\Controller {
 
             $this->userController->postLogin();
 
-            $this->expectOutputRegex("[Location: /]");
-
+            self::expectOutputRegex("[Location: /]");
+            $key = SessionService::$COOKIE_NAME;
+            self::expectOutputString("$key: ");
         }
 
         public function testLoginValidationError(): void
