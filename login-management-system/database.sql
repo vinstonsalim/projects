@@ -17,4 +17,6 @@ CREATE TABLE sessions (
 ALTER TABLE sessions
 ADD CONSTRAINT fk_session_user
     FOREIGN KEY (user_id)
-        REFERENCES users(id);
+        REFERENCES users(id)
+     ON DELETE CASCADE
+     ON UPDATE CASCADE;
