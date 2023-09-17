@@ -90,4 +90,10 @@ class UserController
         }
     }
 
+    public function logout(): void
+    {
+        $this->sessionService->destroy();
+        View::redirect('/');
+    }
+
 }

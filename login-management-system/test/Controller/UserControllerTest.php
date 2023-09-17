@@ -10,17 +10,17 @@ namespace VinstonSalim\Learning\PHP\MVC\App {
 
 namespace VinstonSalim\Learning\PHP\MVC\Service {
 
-    function setcookie(string $name, string $value): void
+    function setcookie(string $key, string $value): void
     {
-        echo "$name: $value";
+        echo "$key: $value";
     }
 }
-
 
 
 namespace VinstonSalim\Learning\PHP\MVC\Controller {
     use PHPUnit\Framework\TestCase;
     use VinstonSalim\Learning\PHP\MVC\Config\Database;
+    use VinstonSalim\Learning\PHP\MVC\Domain\Session;
     use VinstonSalim\Learning\PHP\MVC\Domain\User;
     use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
     use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
@@ -132,6 +132,9 @@ namespace VinstonSalim\Learning\PHP\MVC\Controller {
 
         }
 
+        /**
+         * @return void
+         */
         public function testLoginSuccess(): void
         {
             $user = new User();
@@ -202,6 +205,30 @@ namespace VinstonSalim\Learning\PHP\MVC\Controller {
             $this->expectOutputRegex("[Password]");
             $this->expectOutputRegex("[Sign On]");
             $this->expectOutputRegex("[Id or password is incorrect]");
+        }
+
+        public function testLogout(): void
+        {
+            $user = new User();
+            $user->id = "testId";
+            $user->name = "testName";
+            $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+            $this->userRepository->save($user);
+
+            $session = new Session();
+            $session->id = uniqid();
+            $session->userId = $user->id;
+
+            $this->sessionRepository->save($session);
+
+            $_COOKIE[SessionService::$COOKIE_NAME] = $session->id;
+
+            $this->userController->logout();
+
+            $this->expectOutputRegex("[Location: /]");
+            $key = SessionService::$COOKIE_NAME;
+            $this->expectOutputRegex("[$key: ]");
         }
     }
 }
