@@ -20,10 +20,7 @@ class SessionRepositoryTest extends TestCase
         $this->userRepository = new UserRepository(Database::getConnection());
         $this->sessionRepository->deleteAll();
         $this->userRepository->deleteAll();
-    }
 
-    public function testSaveSuccess()
-    {
         $user = new User();
         $user->id = "test_id";
         $user->name = "test_name";
@@ -31,7 +28,10 @@ class SessionRepositoryTest extends TestCase
 
         // Prevent constraint violation error because of foreign key
         $this->userRepository->save($user);
+    }
 
+    public function testSaveSuccess()
+    {
         $session = new Session();
         $session->id = uniqid();
         $session->userId = "test_id";
@@ -47,14 +47,6 @@ class SessionRepositoryTest extends TestCase
 
     public function testDeleteById()
     {
-        $user = new User();
-        $user->id = "test_id";
-        $user->name = "test_name";
-        $user->password = password_hash("test_password", PASSWORD_BCRYPT);
-
-        // Prevent constraint violation error because of foreign key
-        $this->userRepository->save($user);
-
         $session = new Session();
         $session->id = uniqid();
         $session->userId = "test_id";
@@ -69,13 +61,6 @@ class SessionRepositoryTest extends TestCase
 
     public function testDeleteAll()
     {
-        $user = new User();
-        $user->id = "test_id";
-        $user->name = "test_name";
-        $user->password = password_hash("test_password", PASSWORD_BCRYPT);
-
-        $this->userRepository->save($user);
-
         $session = new Session();
         $session->id = uniqid();
         $session->userId = "test_id";
@@ -86,19 +71,11 @@ class SessionRepositoryTest extends TestCase
         $result =  $this->sessionRepository->findById($session->id);
 
         self::assertNull($result);
-
     }
 
 
     public function testFindById()
     {
-        $user = new User();
-        $user->id = "test_id";
-        $user->name = "test_name";
-        $user->password = password_hash("test_password", PASSWORD_BCRYPT);
-
-        $this->userRepository->save($user);
-
         $session = new Session();
         $session->id = uniqid();
         $session->userId = "test_id";
