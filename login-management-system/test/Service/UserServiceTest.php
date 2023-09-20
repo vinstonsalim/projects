@@ -7,6 +7,7 @@ use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 
@@ -173,5 +174,70 @@ class UserServiceTest extends TestCase
 
         $response = $this->userService->login($request);
 
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function testUpdateSuccess()
+    {
+        // Create User
+        $user = new User();
+        $user->id = "testId";
+        $user->name = "testName";
+        $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+        $this->userRepository->save($user);
+
+        $request = new UserProfileUpdateRequest();
+        $request->id = "testId";
+        $request->name = "testNameUpdated";
+
+        $response = $this->userService->updateProfile($request);
+
+        $this->assertEquals($request->name, $response->user->name);
+        $this->assertEquals($request->id, $response->user->id);
+        $this->assertEquals($user->password, $response->user->password);
+    }
+
+    public function testUpdateValidationError()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Id or Name can't be empty");
+
+        $request = new UserProfileUpdateRequest();
+        $request->id = "testId";
+        $request->name = "";
+
+        $response = $this->userService->updateProfile($request);
+        // Create User
+        $user = new User();
+        $user->id = "testId";
+        $user->name = "testName";
+        $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+        $this->userRepository->save($user);
+
+        $request = new UserProfileUpdateRequest();
+        $request->id = "";
+        $request->name = "";
+
+        $response = $this->userService->updateProfile($request);
+
+        $this->assertEquals($request->name, $response->user->name);
+        $this->assertEquals($request->id, $response->user->id);
+        $this->assertEquals($user->password, $response->user->password);
+    }
+
+    public function testUpdateNotFound()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("User not found");
+
+        $request = new UserProfileUpdateRequest();
+        $request->id = "testId";
+        $request->name = "testNameUpdated";
+
+        $response = $this->userService->updateProfile($request);
     }
 }

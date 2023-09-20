@@ -7,8 +7,10 @@ use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginResponse;
+use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterResponse;
+use VinstonSalim\Learning\PHP\MVC\Model\UserUpdateProfileResponse;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 
 class UserService
@@ -120,6 +122,56 @@ class UserService
         // Id and Password can't be longer than 255 characters to reduce the query time
         if(strlen($userLoginRequest->password) > 255
             || strlen($userLoginRequest->id) > 255)
+        {
+            throw new ValidationException("Id or password is incorrect");
+        }
+
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function updateProfile(UserProfileUpdateRequest $request): UserUpdateProfileResponse
+    {
+        $this->validateUserProfileUpdateRequest($request);
+
+        try {
+            Database::beginTransaction();
+            $user = $this->userRepository->findById($request->id);
+            if($user == null)
+            {
+                throw new ValidationException("User not found");
+            }
+
+            $user->name = $request->name;
+            $this->userRepository->update($user);
+
+            // Response
+            $userUpdateProfileResponse = new UserUpdateProfileResponse();
+            $userUpdateProfileResponse->user = $user;
+            Database::commit();
+            return $userUpdateProfileResponse;
+
+        } catch (\Exception $exception) {
+            Database::rollBack();
+            throw $exception;
+        }
+
+    }
+
+    private function validateUserProfileUpdateRequest(UserProfileUpdateRequest $request): void
+    {
+        if($request->name == null
+            || $request->id == null
+            || trim($request->name) == ""
+            || trim($request->id) == "")
+        {
+            throw new ValidationException("Id or Name can't be empty");
+        }
+
+        // Id and Password can't be longer than 255 characters to reduce the query time
+        if(strlen($request->name) > 255
+            || strlen($request->id) > 255)
         {
             throw new ValidationException("Id or password is incorrect");
         }
