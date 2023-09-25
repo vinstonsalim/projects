@@ -1,16 +1,9 @@
 <?php
 
-namespace VinstonSalim\Learning\PHP\MVC\App {
-
-    function header(string $value): void
-    {
-        echo "$value";
-    }
-}
-
 
 namespace VinstonSalim\Learning\PHP\MVC\Middleware {
 
+    require_once __DIR__ . '/../Helper/helper.php';
     use PHPUnit\Framework\TestCase;
     use VinstonSalim\Learning\PHP\MVC\Config\Database;
     use VinstonSalim\Learning\PHP\MVC\Domain\User;

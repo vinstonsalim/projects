@@ -10,10 +10,8 @@ use VinstonSalim\Learning\PHP\MVC\Repository\SessionRepository;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 
 // Because we are on the same namespace, we can mock the setcookie function
-function setcookie($name, $value): void
-{
-    echo "$name: $value";
-}
+require_once __DIR__ . '/../Helper/helper.php';
+
 class SessionServiceTest extends TestCase
 {
     private SessionService $sessionService;
