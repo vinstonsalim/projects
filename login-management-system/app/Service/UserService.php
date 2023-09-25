@@ -7,7 +7,7 @@ use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginResponse;
-use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserUpdateProfileRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterResponse;
 use VinstonSalim\Learning\PHP\MVC\Model\UserUpdateProfileResponse;
@@ -131,7 +131,7 @@ class UserService
     /**
      * @throws ValidationException
      */
-    public function updateProfile(UserProfileUpdateRequest $request): UserUpdateProfileResponse
+    public function updateProfile(UserUpdateProfileRequest $request): UserUpdateProfileResponse
     {
         $this->validateUserProfileUpdateRequest($request);
 
@@ -159,7 +159,7 @@ class UserService
 
     }
 
-    private function validateUserProfileUpdateRequest(UserProfileUpdateRequest $request): void
+    private function validateUserProfileUpdateRequest(UserUpdateProfileRequest $request): void
     {
         if($request->name == null
             || $request->id == null
@@ -173,7 +173,8 @@ class UserService
         if(strlen($request->name) > 255
             || strlen($request->id) > 255)
         {
-            throw new ValidationException("Id or password is incorrect");
+            throw new ValidationException("Id or Name can't be longer than 255 characters");
+
         }
 
     }

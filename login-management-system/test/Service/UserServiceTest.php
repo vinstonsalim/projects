@@ -7,7 +7,7 @@ use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
-use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserUpdateProfileRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 
@@ -189,7 +189,7 @@ class UserServiceTest extends TestCase
 
         $this->userRepository->save($user);
 
-        $request = new UserProfileUpdateRequest();
+        $request = new UserUpdateProfileRequest();
         $request->id = "testId";
         $request->name = "testNameUpdated";
 
@@ -205,7 +205,7 @@ class UserServiceTest extends TestCase
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage("Id or Name can't be empty");
 
-        $request = new UserProfileUpdateRequest();
+        $request = new UserUpdateProfileRequest();
         $request->id = "testId";
         $request->name = "";
 
@@ -218,7 +218,7 @@ class UserServiceTest extends TestCase
 
         $this->userRepository->save($user);
 
-        $request = new UserProfileUpdateRequest();
+        $request = new UserUpdateProfileRequest();
         $request->id = "";
         $request->name = "";
 
@@ -234,7 +234,7 @@ class UserServiceTest extends TestCase
         $this->expectException(ValidationException::class);
         $this->expectExceptionMessage("User not found");
 
-        $request = new UserProfileUpdateRequest();
+        $request = new UserUpdateProfileRequest();
         $request->id = "testId";
         $request->name = "testNameUpdated";
 
