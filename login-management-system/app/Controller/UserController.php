@@ -6,7 +6,7 @@ use VinstonSalim\Learning\PHP\MVC\App\View;
 use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
-use VinstonSalim\Learning\PHP\MVC\Model\UserUpdateProfileRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\SessionRepository;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
@@ -113,7 +113,7 @@ class UserController
     {
         $user = $this->sessionService->current();
 
-        $request = new UserUpdateProfileRequest();
+        $request = new UserProfileUpdateRequest();
         $request->id = $user->id;
         $request->name = $_POST['name'];
 

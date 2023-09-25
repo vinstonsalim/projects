@@ -7,10 +7,10 @@ use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginResponse;
-use VinstonSalim\Learning\PHP\MVC\Model\UserUpdateProfileRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterResponse;
-use VinstonSalim\Learning\PHP\MVC\Model\UserUpdateProfileResponse;
+use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateResponse;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
 
 class UserService
@@ -131,7 +131,7 @@ class UserService
     /**
      * @throws ValidationException
      */
-    public function updateProfile(UserUpdateProfileRequest $request): UserUpdateProfileResponse
+    public function updateProfile(UserProfileUpdateRequest $request): UserProfileUpdateResponse
     {
         $this->validateUserProfileUpdateRequest($request);
 
@@ -147,7 +147,7 @@ class UserService
             $this->userRepository->update($user);
 
             // Response
-            $userUpdateProfileResponse = new UserUpdateProfileResponse();
+            $userUpdateProfileResponse = new UserProfileUpdateResponse();
             $userUpdateProfileResponse->user = $user;
             Database::commit();
             return $userUpdateProfileResponse;
@@ -159,7 +159,7 @@ class UserService
 
     }
 
-    private function validateUserProfileUpdateRequest(UserUpdateProfileRequest $request): void
+    private function validateUserProfileUpdateRequest(UserProfileUpdateRequest $request): void
     {
         if($request->name == null
             || $request->id == null
