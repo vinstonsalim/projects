@@ -6,6 +6,7 @@ use VinstonSalim\Learning\PHP\MVC\App\View;
 use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserPasswordUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\SessionRepository;
@@ -118,17 +119,53 @@ class UserController
         $request->name = $_POST['name'];
 
         try {
-            $responseUpdate = $this->userService->updateProfile($request);
-
+            $this->userService->updateProfile($request);
             View::redirect('/');
         }
         catch (ValidationException|\Exception $e) {
-            View::render('User  /profile', [
-                'title' => "User Profile Update",
+            View::render('User/profile', [
+                'title' => "Update User's Profile",
                 'error' => $e->getMessage(),
                 'user' => [
                     'id' => $user->id,
                     'name' => $_POST['name'],
+                ]
+            ]);
+        }
+    }
+
+    public function updatePassword(): void
+    {
+        $user = $this->sessionService->current();
+        View::render('User/password', [
+            'title' => "Update User's Password",
+            'user' => [
+                'id' => $user->id,
+            ]
+        ]);
+    }
+
+    public function postUpdatePassword(): void
+    {
+        $user = $this->sessionService->current();
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = $user->id;
+        $request->oldPassword = $_POST['oldPassword'];
+        $request->newPassword = $_POST['newPassword'];
+
+        try {
+            $this->userService->updatePassword($request);
+
+            View::redirect('/');
+        }
+        catch (ValidationException|\Exception $e) {
+            View::render('User/password', [
+                'title' => "Update User's Password",
+                'error' => $e->getMessage(),
+                'user' => [
+                    'id' => $user->id,
+
                 ]
             ]);
         }
