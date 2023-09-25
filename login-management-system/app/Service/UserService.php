@@ -2,11 +2,14 @@
 
 namespace VinstonSalim\Learning\PHP\MVC\Service;
 
+use Exception;
 use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginResponse;
+use VinstonSalim\Learning\PHP\MVC\Model\UserPasswordUpdateRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserPasswordUpdateResponse;
 use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterResponse;
@@ -55,7 +58,7 @@ class UserService
             Database::commit();
             return $userRegisterResponse;
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             Database::rollBack();
             throw $exception;
         }
@@ -152,13 +155,16 @@ class UserService
             Database::commit();
             return $userUpdateProfileResponse;
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             Database::rollBack();
             throw $exception;
         }
 
     }
 
+    /**
+     * @throws ValidationException
+     */
     private function validateUserProfileUpdateRequest(UserProfileUpdateRequest $request): void
     {
         if($request->name == null
@@ -175,6 +181,70 @@ class UserService
         {
             throw new ValidationException("Id or Name can't be longer than 255 characters");
 
+        }
+
+    }
+
+    /**
+     * @throws ValidationException
+     * @throws Exception
+     */
+    public function updatePassword(UserPasswordUpdateRequest $request): UserPasswordUpdateResponse
+    {
+        $this->validateUserPasswordRequest($request);
+
+        try {
+            Database::beginTransaction();
+            $user = $this->userRepository->findById($request->id);
+
+            if($user == null)
+            {
+                throw new ValidationException("User not found");
+            }
+
+            if(!password_verify($request->oldPassword, $user->password))
+            {
+                throw new ValidationException("Old password is incorrect");
+            }
+
+            $user->password = password_hash($request->newPassword, PASSWORD_BCRYPT);
+
+            $this->userRepository->update($user);
+
+            // Response
+            $userUpdatePasswordResponse = new UserPasswordUpdateResponse();
+            $userUpdatePasswordResponse->user = $user;
+
+            Database::commit();
+            return $userUpdatePasswordResponse;
+
+        } catch (Exception $exception) {
+            Database::rollBack();
+            throw $exception;
+        }
+
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function validateUserPasswordRequest(UserPasswordUpdateRequest $request): void
+    {
+        if($request->id == null
+            || $request->oldPassword == null
+            || $request->newPassword == null
+            || trim($request->id) == ""
+            || trim($request->oldPassword) == ""
+            || trim($request->newPassword) == "")
+        {
+            throw new ValidationException("Id, Old Password, or New Password can't be empty");
+        }
+
+        if(strlen($request->id) > 255
+            || strlen($request->oldPassword) > 255
+            || strlen($request->newPassword) > 255)
+        {
+            throw new ValidationException("Id, Old Password, or New Password can't be longer than 255 characters");
         }
 
     }

@@ -7,6 +7,7 @@ use VinstonSalim\Learning\PHP\MVC\Config\Database;
 use VinstonSalim\Learning\PHP\MVC\Domain\User;
 use VinstonSalim\Learning\PHP\MVC\Exception\ValidationException;
 use VinstonSalim\Learning\PHP\MVC\Model\UserLoginRequest;
+use VinstonSalim\Learning\PHP\MVC\Model\UserPasswordUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserProfileUpdateRequest;
 use VinstonSalim\Learning\PHP\MVC\Model\UserRegisterRequest;
 use VinstonSalim\Learning\PHP\MVC\Repository\UserRepository;
@@ -240,4 +241,94 @@ class UserServiceTest extends TestCase
 
         $response = $this->userService->updateProfile($request);
     }
+
+    /**
+     * @throws ValidationException
+     */
+    public function testUpdatePasswordSuccess()
+    {
+        $user = new User();
+        $user->id = "testId";
+        $user->name = "testName";
+        $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+        $this->userRepository->save($user);
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "testId";
+        $request->oldPassword = "testPassword";
+        $request->newPassword = "testPasswordUpdated";
+
+        $response = $this->userService->updatePassword($request);
+
+        self::assertEquals($request->id, $response->user->id);
+        self::assertTrue(password_verify($request->newPassword, $response->user->password));
+    }
+
+    public function testUpdatePasswordNotFound()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("User not found");
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "testId";
+        $request->oldPassword = "testPassword";
+        $request->newPassword = "testPasswordUpdated";
+
+        $response = $this->userService->updatePassword($request);
+
+    }
+
+    public function testUpdatePasswordWrongOldPassword()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Old password is incorrect");
+
+        $user = new User();
+        $user->id = "testId";
+        $user->name = "testName";
+        $user->password = password_hash("testPassword", PASSWORD_BCRYPT);
+
+        $this->userRepository->save($user);
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "testId";
+        $request->oldPassword = "wrongPassword";
+        $request->newPassword = "testPasswordUpdated";
+
+        $response = $this->userService->updatePassword($request);
+
+    }
+
+    public function testUpdatePasswordValidationError()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Id, Old Password, or New Password can't be empty");
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "testId";
+        $request->oldPassword = "";
+        $request->newPassword = "testPasswordUpdated";
+
+        $response = $this->userService->updatePassword($request);
+
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function testUpdatePasswordMoreThan255Char()
+    {
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Id, Old Password, or New Password can't be longer than 255 characters");
+
+        $request = new UserPasswordUpdateRequest();
+        $request->id = "testId";
+        $request->oldPassword = "testPassword";
+        $request->newPassword = str_repeat("a", 256);
+
+        $response = $this->userService->updatePassword($request);
+    }
+
+
 }
