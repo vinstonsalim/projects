@@ -2,7 +2,7 @@
 
 namespace VinstonSalim\Learning\PHP\MVC\Model;
 
-class UserProfileUpdateRequest
+class UserUpdateProfileRequest
 {
     public ?string $id = null;
     public ?string $name = null;
