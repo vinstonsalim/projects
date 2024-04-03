@@ -28,11 +28,3 @@ To build the project, use your preferred C++ compiler and include all the `.cpp`
 ## Running
 
 After building, run the resulting executable to start the program.
-
-## Contributing
-
-This project is part of an exam and is not open for contributions.
-
-## License
-
-This project is licensed under the terms of the MIT license.
