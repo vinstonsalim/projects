@@ -4,9 +4,7 @@
 
 ## Beschreibung
 
-Dieses Repository enthält die Lösungen für die "Alte Klausur" für den Kurs "Programmierung 1" an der Hochschule Darmstadt (HDA), Fachbereich Informatik (FBI). Die Prüfung fand im Wintersemester 2022/23 statt.
-
-Dieses Projekt ist eine einfache Simulation eines Ponyhofs, inspiriert vom Sprichwort "Das Leben ist ein Ponyhof". Das Programm modelliert einen Ponyhof mit verschiedenen Arten von Ponys und deren Eigenschaften. Die Ponys werden in einem Stall gespeichert, und der Benutzer kann mit den Ponys über eine menügesteuerte Schnittstelle interagieren.
+Dieses Repository enthält die Lösungen für die "Alte Klausur" für den Kurs "Programmierung 1" an der Hochschule Darmstadt (HDA) von Prof. Dr. Yvonne Jung, Fachbereich Informatik (FBI), dieses Repository wurde erstellt als ich bei ihr als Tutor tätig im Wintersemester 2023/2024 war. Die Prüfung fand im Wintersemester 2022/23 statt und dieses Programm modelliert einen Ponyhof mit verschiedenen Arten von Ponys und deren Eigenschaften. Die Ponys werden in einem Stall gespeichert, und der Benutzer kann mit den Ponys über eine menügesteuerte Schnittstelle interagieren.
 
 ## Struktur
 

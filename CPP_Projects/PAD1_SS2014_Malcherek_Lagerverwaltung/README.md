@@ -1,8 +1,18 @@
-# Warehouse Management System
+# Warehouse Management System - Exam of PAD1 - Summer Semester 2014 - Prof. Dr. Malcherek
+
+[![de](https://img.shields.io/badge/lang-de-green.svg)](README.de.md)
 
 ## Description
 
-The Warehouse Management System is designed to handle the storage and retrieval of materials in a warehouse setting. It allows users to manage inventory, book goods receipts, and issue goods efficiently.
+This repository contains the solutions for the "Old Exam" for the course "Programming, Algorithms, and Data Structures 1" at the University of Applied Sciences Darmstadt (HDA) by Prof. Dr. Malcherek, Department of Computer Science (FBI). The exam took place in the summer semester of 2014. The warehouse management system is designed to handle the storage and retrieval of materials in a warehouse management system. It allows users to manage inventory, book goods receipts, and process goods issues efficiently.
+
+## Structure
+
+- [`Material.cpp`](Material.cpp) and [`Material.h`](Material.h): These files define the `Material` class, which represents a material with a unique identifier and description.
+- [`Warehouse.cpp`](Warehouse.cpp) and [`Warehouse.h`](Warehouse.h): These files define the `Warehouse` class, which represents the warehouse with multiple shelves, compartments, and levels.
+- [`WarehouseManagementSystem.cpp`](WarehouseManagementSystem.cpp) and [`WarehouseManagementSystem.h`](WarehouseManagementSystem.h): These files define the `WarehouseManagementSystem` class, which provides the user interface for interacting with the system.
+- [`main.cpp`](main.cpp): This file contains the main function and helper functions for user interaction.
+- [`CMakeLists.txt`](CMakeLists.txt): This file contains the CMake configuration for building the project.
 
 ## Features
 
@@ -23,6 +33,16 @@ To utilize the Warehouse Management System:
 3. Manage multiple materials and their inventory efficiently.
 4. Utilize the LIFO strategy for optimal goods handling.
 
-## Implementation
+## Lessons Learned
 
-The system is implemented in C++ and includes classes for warehouse management, material handling, and user interaction. It utilizes object-oriented principles to ensure modularity and extensibility.
+- Learned how to design and implement a warehouse management system.
+- Gained experience in managing inventory and material handling.
+- Understood the importance of efficient storage and retrieval strategies.
+- Learned how to implement LILO strategy for goods issues.
+
+## Further Improvements if I had more time
+
+- Add error handling for invalid user inputs.
+- Integrate a database for persistent storage of material and inventory data.
+- Immporting and exporting the warehouse data to and from a csv file.
+- Adding a graphical user interface (GUI) for the warehouse management system to improve user experience with QtGUI.

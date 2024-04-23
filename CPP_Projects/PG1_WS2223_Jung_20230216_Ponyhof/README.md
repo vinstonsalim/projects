@@ -1,10 +1,10 @@
-# Pony Farm - Exam of Programming 1 - WS2223 - Prof. Dr. Jung
+# Pony Farm - Exam of Programming 1 - WS2223 - Prof. Dr. Yvonne Jung
 
 [![de](https://img.shields.io/badge/lang-de-green.svg)](README.de.md)
 
 ## Description
 
-This repository contains the solutions for the "Alte Klausur" (Old Exam) for the course "Programming 1" at the University of Applied Sciences Darmstadt (HDA), Department of Computer Science (FBI). The exam was held in the winter semester of 2022/23.
+This repository contains the solutions for the "Old Exam" for the course "Programming 1" at the University of Applied Sciences Darmstadt (HDA) by Prof. Dr. Yvonne Jung, Department of Computer Science (FBI). This repository was created when I was working as a teaching assistant for her in the winter semester 2023/2024. The exam itself took place in the winter semester 2022/23, and this program models a pony farm with different types of ponies and their characteristics. The ponies are stored in a stable, and the user can interact with the ponies through a command line interface.
 
 ## Structure
 
