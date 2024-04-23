@@ -1,4 +1,4 @@
-# Alte Klausur - Programming 1
+# Alte Klausur - Programmieren 1 - Ponyhof
 
 This repository contains the solutions for the "Alte Klausur" (Old Exam) for the course "Programming 1" at the University of Applied Sciences Darmstadt (HDA), Department of Computer Science (FBI). The exam was held in the winter semester of 2022/23.
 
