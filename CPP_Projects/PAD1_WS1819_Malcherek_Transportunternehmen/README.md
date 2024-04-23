@@ -1,10 +1,10 @@
-# Shipping Company Logbook - Exam of PAD1 - Winter Semester 2018/2019 - Prof. Dr. Malcherek
+# Shipping Company Logbook - Exam of PAD1 - Winter Semester 2018/2019 - Prof. Dr. Arnim Malcherek
 
 [![de](https://img.shields.io/badge/lang-de-green.svg)](README.de.md)
 
 ## Description
 
-This project is basically a pratical exam from Prof. Dr. Malcherek for the Programming, Algorithm, and Data Structure 1 (PAD1) course in the winter semester 2018/2019. The task was to implement a simple program for a shipping company. The program should be able to create a logbook for trips and output a revenue list. The program should also be able to create ships and assign them to trips.
+This project is basically a pratical exam from Prof. Dr. Arnim Malcherek for the Programming, Algorithm, and Data Structure 1 (PAD1) course in the winter semester 2018/2019. The task was to implement a simple program for a shipping company. The program should be able to create a logbook for trips and output a revenue list. The program should also be able to create ships and assign them to trips.
 
 ## Structure
 
