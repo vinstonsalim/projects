@@ -1,4 +1,8 @@
-# Alte Klausur - Programmieren 1 - Ponyhof
+# Pony Farm - Exam of Programming 1 - WS2223 - Prof. Dr. Jung
+
+[![de](https://img.shields.io/badge/lang-de-green.svg)](README.de.md)
+
+## Description
 
 This repository contains the solutions for the "Alte Klausur" (Old Exam) for the course "Programming 1" at the University of Applied Sciences Darmstadt (HDA), Department of Computer Science (FBI). The exam was held in the winter semester of 2022/23.
 
@@ -13,18 +17,29 @@ The project consists of several C++ files implementing different classes:
 - [shetlandpony.cpp](shetlandpony.cpp) and [shetlandpony.h](shetlandpony.h)
 - [stall.cpp](stall.cpp) and [stall.h](stall.h)
 
-## Program's Description
+## Features
+
 This project is a simple simulation of a pony farm, inspired by the saying "life is a pony farm". The program models a pony farm, complete with different types of ponies and their attributes. The ponies are stored in a stable, and the user can interact with the ponies through a menu-driven interface.
 
 The program starts by calculating the number of hooves on the farm using a recursive function. The user can then add ponies to the farm, specifying the breed, name, and birth year of each pony. The ponies are stored in a stable, which can hold a maximum of 20 ponies. The user can also take a pony out for a ride, with the program checking if the pony is suitable for riding based on the rider's age and the pony's breed and temperament.
 
 The program also allows the user to check on the ponies in the stable, displaying information about each pony and the overall state of the stable. The user can see the name, birth year, breed, and other attributes of each pony, as well as the average age of all the ponies in the stable. The program ends by returning all the ponies to their boxes and cleaning up any dynamically allocated memory.
 
+## Usage
 
-## Building
+To build and run this project, you need to have CMake installed. Then you can directly open it with CLion/QtCreator and run it from there. Alternatively, you can build it manually.
 
-To build the project, use your preferred C++ compiler and include all the `.cpp` files.
+## Lessons Learned
 
-## Running
+- Learned how to use inheritance in C++
+- Learned how to use polymorphism in C++
+- Learned how to use dynamic memory allocation in C++
+- Learned how to use smart pointers in C++
 
-After building, run the resulting executable to start the program.
+## Further Improvements if I had more time
+
+- Adding more pony breeds and attributes
+- Adding more interactions with the ponies
+- Adding more error handling, particularly for user input
+- Exporting and Importing the pony farm to and from a csv file
+- Adding a graphical user interface (GUI) for the pony farm

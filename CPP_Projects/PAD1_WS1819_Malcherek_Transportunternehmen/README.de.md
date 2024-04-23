@@ -1,5 +1,7 @@
 # Transportunternehmen - Alte Klausur PAD1 - WS1819 - Prof. Dr. Malcherek
 
+[![en](https://img.shields.io/badge/lang-de-green.svg)](README.md)
+
 ## Beschreibung
 
 Dieses Projekt war eine praktische Prüfung von Prof. Dr. Malcherek für den Kurs Programmieren, Algorithmen und Datenstrukturen 1 im Wintersemester 2018/2019. Die Aufgabe bestand darin, ein einfaches Programm für die Verwaltung eines Transportunternehmens zu erstellen. Das Programm sollte in der Lage sein, Fahrten zu verwalten, Schiffe zu verwalten und eine Umsatzliste zu erstellen. Die Fahrten sollten in einem Tagebuch gespeichert werden, das in einer Klasse implementiert werden sollte. Die Schiffe sollten ebenfalls in einer Klasse implementiert werden. Die Umsatzliste sollte basierend auf dem Schiffsnamen und dem Umsatz erstellt werden.
@@ -20,7 +22,7 @@ Dieses Projekt war eine praktische Prüfung von Prof. Dr. Malcherek für den Kur
 
 ## Verwendung
 
-Um dieses Projekt zu erstellen und auszuführen, müssen Sie CMake installiert haben. Anschließend können Sie es direkt mit CLion öffnen und von dort ausführen. Alternativ können Sie es manuell erstellen.
+Um dieses Projekt zu erstellen und auszuführen, müssen Sie CMake installiert haben. Anschließend können Sie es direkt mit CLion/QtCreator öffnen und von dort ausführen. Alternativ können Sie es manuell erstellen.
 
 ## Lessons Learned
 
